@@ -1,7 +1,7 @@
 import json
 from humbug_helper import SupportBundleHelper
 from collections import OrderedDict
-
+from bugzilla_helper import BugzillaHelper
 
 class BotCommands(object):
    # list of valid commands
@@ -10,6 +10,7 @@ class BotCommands(object):
    PING = u"/ping"
 
    LIST_SUPPORT_BUNDLES = u"/listSB"
+   GET_SUMMARY = u"/summarize"
 
    # end list of commands
 
@@ -75,6 +76,11 @@ class BotCommands(object):
       return sbHelper.getList()
 
    @classmethod
+   def bot_bug_summary_get(cls, botmessage):
+      bugzillaHelper = BugzillaHelper(botmessage.messagetext.split(" ")[1])
+      return bugzillaHelper.getSummary()
+
+   @classmethod
    def process_command(cls, botmessage):
       cmd = botmessage.command
       if BotCommands.is_valid_command(cmd):
@@ -115,4 +121,12 @@ BotCommands._commands.update({
       "args": False
    }})
 
-
+BotCommands._commands.update({
+   BotCommands.GET_SUMMARY: {
+      "authenticated": True,
+      "admin": False,
+      "subcommands": None,
+      "callback": BotCommands.bot_bug_summary_get,
+      "help": "gets the summary of the bug. usage: /summarize <PR number>",
+      "args": False
+   }})
