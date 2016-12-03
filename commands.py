@@ -9,7 +9,7 @@ class BotCommands(object):
    HELP = u"/help"
    PING = u"/ping"
 
-   LIST_SUPPORT_BUNDLES = u"/listSb"
+   LIST_SUPPORT_BUNDLES = u"/listSB"
 
    # end list of commands
 
@@ -67,11 +67,11 @@ class BotCommands(object):
 
    @classmethod
    def bot_ping(cls, botmessage):
-      return "pong!"
+      return "ping!"
 
    @classmethod
    def bot_support_bundle_list_get(cls, botmessage):
-      sbHelper = SupportBundleHelper("1651968")
+      sbHelper = SupportBundleHelper(botmessage.messagetext.split(" ")[1])
       return sbHelper.getList()
 
    @classmethod
@@ -111,7 +111,7 @@ BotCommands._commands.update({
       "admin": False,
       "subcommands": None,
       "callback": BotCommands.bot_support_bundle_list_get,
-      "help": "get list of support bundles",
+      "help": "get list of support bundles. usage: /listSB <PR number>",
       "args": False
    }})
 

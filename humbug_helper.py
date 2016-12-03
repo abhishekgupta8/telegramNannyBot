@@ -7,7 +7,6 @@ version = "2.1"
 
 class SupportBundleHelper(object):
    def __init__(self, pr):
-#      self.config = config
       self.pr = pr
 
    def SupportBundlesListGet(self):
@@ -15,10 +14,18 @@ class SupportBundleHelper(object):
       payload = {'urls': self.pr, 'ignore_timeout':'false'}
       r = requests.get(hbURL + entryPoint, params=payload)
       a = eval(r.text)
+      if 'error' in a:
+         if a['error'] == 256:
+            return "This PR does not have any support bundles"
+         else:
+            return "An error occurred: %d" % a['error']
       prefix = a["prefix"]
       diff = a["diff"]
       suffix = a["suffix"]
-      return [prefix, diff, suffix]
+      if len(diff) == 1:
+         if diff[0] == self.pr:
+            return "This PR does not exist"
+      return "\n".join(diff)
    
    def EncodeReq(self, inStr):
       compressedStr = zlib.compress(inStr)
@@ -37,6 +44,5 @@ class SupportBundleHelper(object):
       print(r.url)
 
    def getList(self):
-      [prefix, diff, suffix] = self.SupportBundlesListGet()
-      return diff[0]
+      return self.SupportBundlesListGet()
 #      SupportBundleTextSearch(prefix, diff[0], suffix, "test2")
