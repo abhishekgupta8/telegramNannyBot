@@ -54,8 +54,8 @@ class BugzillaHelper(object):
 
    def getBugList(self, uName, query):
       try:
-         bugList = self.server.Search.run_saved_query(uName, query)
-         return bugList
+         bugList = self.server.Search.run_saved_query(uName, query)['bugidlist']
+         return str(bugList)
       except ValueError as value_err:
          raise ValueError(value_err)
       except xmlrpclib.Fault as not_found_err:
@@ -69,10 +69,8 @@ if __name__ == '__main__':
     #print list(test.getInfo().keys())
     #print test.getSummary()
     mySavedQueries = test.getSavedQueries('kotwala')
-    print mySavedQueries[3]
-    bugList = test.getBugList('kotwala', mySavedQueries[1])
+    print (test.getBugList('kotwala', mySavedQueries[3]))
     #print len(bugList)
-    print bugList
 #    for bug in bugList:
 #       print bug[
 
