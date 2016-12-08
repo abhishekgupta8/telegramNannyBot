@@ -9,8 +9,10 @@ class BotCommands(object):
    HELP = u"/help"
    PING = u"/ping"
 
-   LIST_SUPPORT_BUNDLES = u"/listSB"
-   GET_SUMMARY = u"/summarize"
+   BUGZILLA_LIST_SUPPORT_BUNDLES = u"/listSB"
+   BUGZILLA_GET_SUMMARY = u"/summarize"
+   BUGZILLA_GET_REPORTER = u"/getReporter"
+   BUGZILLA_GET_ASSIGNEE = u"/getAssignee"
 
    # end list of commands
 
@@ -71,14 +73,24 @@ class BotCommands(object):
       return "ping!"
 
    @classmethod
-   def bot_support_bundle_list_get(cls, botmessage):
+   def bot_bugzilla_support_bundle_list(cls, botmessage):
       sbHelper = SupportBundleHelper(botmessage.messagetext.split(" ")[1])
       return sbHelper.getList()
 
    @classmethod
-   def bot_bug_summary_get(cls, botmessage):
+   def bot_bugzilla_get_summary(cls, botmessage):
       bugzillaHelper = BugzillaHelper(botmessage.messagetext.split(" ")[1])
       return bugzillaHelper.getSummary()
+
+   @classmethod
+   def bot_bugzilla_get_reporter(cls, botmessage):
+      bugzillaHelper = BugzillaHelper(botmessage.messagetext.split(" ")[1])
+      return bugzillaHelper.getReporter()
+
+   @classmethod
+   def bot_bugzilla_get_assignee(cls, botmessage):
+      bugzillaHelper = BugzillaHelper(botmessage.messagetext.split(" ")[1])
+      return bugzillaHelper.getAssignee()
 
    @classmethod
    def process_command(cls, botmessage):
@@ -112,21 +124,41 @@ BotCommands._commands.update({
    }})
 
 BotCommands._commands.update({
-   BotCommands.LIST_SUPPORT_BUNDLES: {
+   BotCommands.BUGZILLA_LIST_SUPPORT_BUNDLES: {
       "authenticated": True,
       "admin": False,
       "subcommands": None,
-      "callback": BotCommands.bot_support_bundle_list_get,
+      "callback": BotCommands.bot_bugzilla_support_bundle_list,
       "help": "get list of support bundles. usage: /listSB <PR number>",
       "args": False
    }})
 
 BotCommands._commands.update({
-   BotCommands.GET_SUMMARY: {
+   BotCommands.BUGZILLA_GET_SUMMARY: {
       "authenticated": True,
       "admin": False,
       "subcommands": None,
-      "callback": BotCommands.bot_bug_summary_get,
+      "callback": BotCommands.bot_bugzilla_get_summary,
       "help": "gets the summary of the bug. usage: /summarize <PR number>",
+      "args": False
+   }})
+
+BotCommands._commands.update({
+   BotCommands.BUGZILLA_GET_REPORTER: {
+      "authenticated": True,
+      "admin": False,
+      "subcommands": None,
+      "callback": BotCommands.bot_bugzilla_get_reporter,
+      "help": "gets the reporter of the bug. usage: /getReporter <PR number>",
+      "args": False
+   }})
+
+BotCommands._commands.update({
+   BotCommands.BUGZILLA_GET_ASSIGNEE: {
+      "authenticated": True,
+      "admin": False,
+      "subcommands": None,
+      "callback": BotCommands.bot_bugzilla_get_assignee,
+      "help": "gets the assignee of the bug. usage: /getAssignee <PR number>",
       "args": False
    }})

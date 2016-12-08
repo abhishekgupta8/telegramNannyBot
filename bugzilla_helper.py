@@ -73,5 +73,5 @@ if __name__ == '__main__':
     #print len(bugList)
 #    for bug in bugList:
 #       print bug[
-
-
+    mySavedQueries = test.getSavedQueries('gabhishek')
+    print mySavedQueries
