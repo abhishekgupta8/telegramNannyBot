@@ -79,18 +79,18 @@ class BotCommands(object):
 
    @classmethod
    def bot_bugzilla_get_summary(cls, botmessage):
-      bugzillaHelper = BugzillaHelper(botmessage.messagetext.split(" ")[1])
-      return bugzillaHelper.getSummary()
+      bugzillaHelper = BugzillaHelper()
+      return bugzillaHelper.getSummary(botmessage.messagetext.split(" ")[1])
 
    @classmethod
    def bot_bugzilla_get_reporter(cls, botmessage):
-      bugzillaHelper = BugzillaHelper(botmessage.messagetext.split(" ")[1])
-      return bugzillaHelper.getReporter()
+      bugzillaHelper = BugzillaHelper()
+      return bugzillaHelper.getReporter(botmessage.messagetext.split(" ")[1])
 
    @classmethod
    def bot_bugzilla_get_assignee(cls, botmessage):
-      bugzillaHelper = BugzillaHelper(botmessage.messagetext.split(" ")[1])
-      return bugzillaHelper.getAssignee()
+      bugzillaHelper = BugzillaHelper()
+      return bugzillaHelper.getAssignee(botmessage.messagetext.split(" ")[1])
 
    @classmethod
    def process_command(cls, botmessage):

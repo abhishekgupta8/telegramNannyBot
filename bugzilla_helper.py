@@ -3,14 +3,13 @@ import xmlrpclib
 from login import getServer
 
 class BugzillaHelper(object):
-   def __init__(self, pr):
-      self.pr = pr
+   def __init__(self):
       self.server = getServer()
 
 
-   def getInfo(self):
+   def getInfo(self, pr):
       try:
-         bugInfo = self.server.Bug.show_bug(int(self.pr))
+         bugInfo = self.server.Bug.show_bug(int(pr))
          return bugInfo
       except ValueError as value_err:
          raise ValueError(value_err)
@@ -20,23 +19,23 @@ class BugzillaHelper(object):
          raise Exception("Error in get summary")
 
 
-   def getSummary(self):
+   def getSummary(self, pr):
       try:
-         bugInfo = self.getInfo()
+         bugInfo = self.getInfo(pr)
          return bugInfo['short_desc']
       except Exception as e:
          return str(e)
 
-   def getAssignee(self):
+   def getAssignee(self, pr):
       try:
-         bugInfo = self.getInfo()
+         bugInfo = self.getInfo(pr)
          return bugInfo['assigned_to']
       except Exception as e:
          return str(e)
 
-   def getReporter(self):
+   def getReporter(self, pr):
       try:
-         bugInfo = self.getInfo()
+         bugInfo = self.getInfo(pr)
          return bugInfo['reporter']
       except Exception as e:
          return str(e)
