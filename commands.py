@@ -76,34 +76,52 @@ class BotCommands(object):
 
    @classmethod
    def bot_bugzilla_support_bundle_list(cls, botmessage):
-      sbHelper = SupportBundleHelper(botmessage.messagetext.split(" ")[1])
-      return sbHelper.getList()
+      try:
+         sbHelper = SupportBundleHelper(botmessage.messagetext.split(" ")[1])
+         return sbHelper.getList()
+      except Exception as e:
+         return str(e)
 
    @classmethod
    def bot_bugzilla_get_summary(cls, botmessage):
-      bugzillaHelper = BugzillaHelper()
-      return bugzillaHelper.getSummary(botmessage.messagetext.split(" ")[1])
+      try:
+         bugzillaHelper = BugzillaHelper()
+         return bugzillaHelper.getSummary(botmessage.messagetext.split(" ")[1])
+      except Exception as e:
+         return str(e)
 
    @classmethod
    def bot_bugzilla_get_reporter(cls, botmessage):
-      bugzillaHelper = BugzillaHelper()
-      return bugzillaHelper.getReporter(botmessage.messagetext.split(" ")[1])
+      try:
+         bugzillaHelper = BugzillaHelper()
+         return bugzillaHelper.getReporter(botmessage.messagetext.split(" ")[1])
+      except Exception as e:
+         return str(e)
 
    @classmethod
    def bot_bugzilla_get_assignee(cls, botmessage):
-      bugzillaHelper = BugzillaHelper()
-      return bugzillaHelper.getAssignee(botmessage.messagetext.split(" ")[1])
+      try:
+         bugzillaHelper = BugzillaHelper()
+         return bugzillaHelper.getAssignee(botmessage.messagetext.split(" ")[1])
+      except Exception as e:
+         return str(e)
 
    @classmethod
    def bot_bugzilla_get_saved_search(cls, botmessage):
-      bugzillaHelper = BugzillaHelper()
-      return bugzillaHelper.getSavedQueries(botmessage.messagetext.split(" ")[1])
+      try:
+         bugzillaHelper = BugzillaHelper()
+         return bugzillaHelper.getSavedQueries(botmessage.messagetext.split(" ")[1])
+      except Exception as e:
+         return str(e)
 
    @classmethod
    def bot_bugzilla_get_bug_list(cls, botmessage):
-      bugzillaHelper = BugzillaHelper()
-      params = botmessage.messagetext.split(" ")
-      return bugzillaHelper.getBugList(params[0], params [1])
+      try:
+         bugzillaHelper = BugzillaHelper()
+         params = botmessage.messagetext.split(" ")
+         return bugzillaHelper.getBugList(params[0], params [1])
+      except Exception as e:
+         return str(e)
 
    @classmethod
    def process_command(cls, botmessage):
