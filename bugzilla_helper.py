@@ -8,17 +8,72 @@ class BugzillaHelper(object):
       self.server = getServer()
 
 
+   def getInfo(self):
+      try:
+         bugInfo = self.server.Bug.show_bug(int(self.pr))
+         return bugInfo
+      except ValueError as value_err:
+         raise ValueError(value_err)
+      except xmlrpclib.Fault as not_found_err:
+         raise Exception(not_found_err)
+      except:
+         raise Exception("Error in get summary")
+
+
    def getSummary(self):
       try:
-         summary = self.server.Bug.show_bug(int(self.pr))['short_desc']
+         bugInfo = self.getInfo()
+         return bugInfo['short_desc']
+      except Exception as e:
+         return str(e)
+
+   def getAssignee(self):
+      try:
+         bugInfo = self.getInfo()
+         return bugInfo['assigned_to']
+      except Exception as e:
+         return str(e)
+
+   def getReporter(self):
+      try:
+         bugInfo = self.getInfo()
+         return bugInfo['reporter']
+      except Exception as e:
+         return str(e)
+
+   def getSavedQueries(self, uName):
+      try:
+         savedSearch = self.server.Search.get_all_saved_queries(uName)
+         return savedSearch
       except ValueError as value_err:
-         return str(value_err)
+         raise ValueError(value_err)
       except xmlrpclib.Fault as not_found_err:
-         return str(not_found_err)
+         raise Exception(not_found_err)
       except:
-         return "Error in get summary"
-      return summary
-         
+         raise Exception("Error in get summary")
+
+   def getBugList(self, uName, query):
+      try:
+         bugList = self.server.Search.run_saved_query(uName, query)
+         return bugList
+      except ValueError as value_err:
+         raise ValueError(value_err)
+      except xmlrpclib.Fault as not_found_err:
+         raise Exception(not_found_err)
+      except Exception as e:
+         raise Exception(e)
+
+
 if __name__ == '__main__':
     test = BugzillaHelper('1777085')
-    print test.getSummary()
+    #print list(test.getInfo().keys())
+    #print test.getSummary()
+    mySavedQueries = test.getSavedQueries('kotwala')
+    print mySavedQueries[3]
+    bugList = test.getBugList('kotwala', mySavedQueries[1])
+    #print len(bugList)
+    print bugList
+#    for bug in bugList:
+#       print bug[
+
+

@@ -26,12 +26,12 @@ class SupportBundleHelper(object):
          if diff[0] == self.pr:
             return "This PR does not exist"
       return "\n".join(diff)
-   
+
    def EncodeReq(self, inStr):
       compressedStr = zlib.compress(inStr)
       encodedStr = base64.b64encode(compressedStr)
       return "".join(encodedStr.split("\n"))
-   
+
    def SupportBundleTextSearch(sbPrefix, sbBody, sbSuffix, searchTerm):
       entryPoint = "hb"
       payload = {'searchterm': searchTerm,
@@ -39,7 +39,7 @@ class SupportBundleHelper(object):
                  'url': EncodeReq(sbBody),
                  'suffix': sbSuffix,
                  'v': version}
-   
+
       r = requests.get(hbURL + entryPoint, params=payload)
       print(r.url)
 
