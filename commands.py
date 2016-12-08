@@ -2,6 +2,7 @@ import json
 from humbug_helper import SupportBundleHelper
 from collections import OrderedDict
 from bugzilla_helper import BugzillaHelper
+from coresummary import CoreSummary
 
 class BotCommands(object):
    # list of valid commands
@@ -18,6 +19,7 @@ class BotCommands(object):
    BUGZILLA_GET_ASSIGNEE = u"/getAssignee"
    BUGZILLA_GET_SAVED_SEARCH = u"/getSavedSearch"
    BUGZILLA_GET_BUG_LIST = u"/getBugList"
+   CORESUMMARY_GET_REPORT = u"/getCoreSummary"
 
    # end list of commands
 
@@ -156,6 +158,16 @@ class BotCommands(object):
          return str(e)
 
    @classmethod
+   def bot_coresummary_get_report(cls, botmessage):
+      try:
+         params = botmessage.messagetext.split(" ")
+         coreSummary = CoreSummary(params[1], params[2])
+         return coreSummary.run_report()
+      except Exception as e:
+         return str(e)
+
+
+   @classmethod
    def process_command(cls, botmessage):
       cmd = botmessage.command
       if BotCommands.is_valid_command(cmd):
@@ -273,5 +285,15 @@ BotCommands._commands.update({
       "subcommands": None,
       "callback": BotCommands.bot_bugzilla_post_comment,
       "help": "posts comment to the bug. usage: /postBugComment <PR number> <comment>",
+      "args": False
+   }})
+
+BotCommands._commands.update({
+   BotCommands.CORESUMMARY_GET_REPORT: {
+      "authenticated": True,
+      "admin": False,
+      "subcommands": None,
+      "callback": BotCommands.bot_coresummary_get_report,
+      "help": "posts comment to the bug. usage: /getCoreSummary <PR number> <bundle ID >",
       "args": False
    }})
