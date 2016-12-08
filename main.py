@@ -51,8 +51,10 @@ class Main(object):
          return
 
       rc = BotCommands.process_command(botmessage)
+      maxLen = 1000
       if rc:
-         self.bot.sendMessage(botmessage.user.userid, rc)
+         for i in range(0, len(rc), maxLen):
+            self.bot.sendMessage(botmessage.user.userid, rc[i:i+maxLen])
 
    def start(self):
       self.bot.message_loop(self._handle)

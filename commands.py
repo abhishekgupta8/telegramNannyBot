@@ -10,6 +10,7 @@ class BotCommands(object):
    PING = u"/ping"
 
    BUGZILLA_LIST_SUPPORT_BUNDLES = u"/listSB"
+   BUGZILLA_SEARCH_SUPPORT_BUNDLE = u"/searchSB"
    BUGZILLA_GET_SUMMARY = u"/summarize"
    BUGZILLA_GET_BUG_DESCRIPTION = u"/getBugDescription"
    BUGZILLA_POST_BUG_COMMENT = u"/postBugComment"
@@ -81,6 +82,15 @@ class BotCommands(object):
       try:
          sbHelper = SupportBundleHelper(botmessage.messagetext.split(" ")[1])
          return sbHelper.getList()
+      except Exception as e:
+         return str(e)
+
+   @classmethod
+   def bot_humbug_support_bundle_search(cls, botmessage):
+      try:
+         params = botmessage.messagetext.split(" ")
+         sbHelper = SupportBundleHelper(params[1])
+         return sbHelper.TextSearchInBundleId(int(params[2]), params[3])
       except Exception as e:
          return str(e)
 
@@ -183,6 +193,16 @@ BotCommands._commands.update({
       "subcommands": None,
       "callback": BotCommands.bot_bugzilla_support_bundle_list,
       "help": "get list of support bundles. usage: /listSB <PR number>",
+      "args": False
+   }})
+
+BotCommands._commands.update({
+   BotCommands.BUGZILLA_SEARCH_SUPPORT_BUNDLE: {
+      "authenticated": True,
+      "admin": False,
+      "subcommands": None,
+      "callback": BotCommands.bot_humbug_support_bundle_search,
+      "help": "get list of support bundles. usage: /searchSB <PR number> <bundleID> <search string>",
       "args": False
    }})
 
