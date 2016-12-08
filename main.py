@@ -47,7 +47,7 @@ class Main(object):
       # check if command is valid
       if not BotCommands.is_valid_command(botmessage.command):
          self.bot.sendMessage(botmessage.user.userid,
-            "Unrecognized command? Check /help")
+            "Unrecognized command! Check /help")
          return
 
       rc = BotCommands.process_command(botmessage)

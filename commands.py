@@ -13,6 +13,8 @@ class BotCommands(object):
    BUGZILLA_GET_SUMMARY = u"/summarize"
    BUGZILLA_GET_REPORTER = u"/getReporter"
    BUGZILLA_GET_ASSIGNEE = u"/getAssignee"
+   BUGZILLA_GET_SAVED_SEARCH = u"/getSavedSearch"
+   BUGZILLA_GET_BUG_LIST = u"/getBugList"
 
    # end list of commands
 
@@ -93,6 +95,17 @@ class BotCommands(object):
       return bugzillaHelper.getAssignee(botmessage.messagetext.split(" ")[1])
 
    @classmethod
+   def bot_bugzilla_get_saved_search(cls, botmessage):
+      bugzillaHelper = BugzillaHelper()
+      return bugzillaHelper.getSavedQueries(botmessage.messagetext.split(" ")[1])
+
+   @classmethod
+   def bot_bugzilla_get_bug_list(cls, botmessage):
+      bugzillaHelper = BugzillaHelper()
+      params = botmessage.messagetext.split(" ")
+      return bugzillaHelper.getBugList(params[0], params [1])
+
+   @classmethod
    def process_command(cls, botmessage):
       cmd = botmessage.command
       if BotCommands.is_valid_command(cmd):
@@ -160,5 +173,25 @@ BotCommands._commands.update({
       "subcommands": None,
       "callback": BotCommands.bot_bugzilla_get_assignee,
       "help": "gets the assignee of the bug. usage: /getAssignee <PR number>",
+      "args": False
+   }})
+
+BotCommands._commands.update({
+   BotCommands.BUGZILLA_GET_SAVED_SEARCH: {
+      "authenticated": True,
+      "admin": False,
+      "subcommands": None,
+      "callback": BotCommands.bot_bugzilla_get_saved_search,
+      "help": "gets the list of saved searches for a user. usage: /getSavedSearch <PR number>",
+      "args": False
+   }})
+
+BotCommands._commands.update({
+   BotCommands.BUGZILLA_GET_BUG_LIST: {
+      "authenticated": True,
+      "admin": False,
+      "subcommands": None,
+      "callback": BotCommands.bot_bugzilla_get_bug_list,
+      "help": "gets the list of bug for a saved search. usage: /getBugList <PR number>",
       "args": False
    }})
