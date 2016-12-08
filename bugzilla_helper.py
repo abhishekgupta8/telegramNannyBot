@@ -16,7 +16,7 @@ class BugzillaHelper(object):
       except xmlrpclib.Fault as not_found_err:
          raise Exception(not_found_err)
       except:
-         raise Exception("Error in get summary")
+         raise
 
    # Add comment to a PR
    def addComment(self, pr, comment):
@@ -25,15 +25,15 @@ class BugzillaHelper(object):
       except xmlrpclib.Fault as not_found_err:
          raise Exception(not_found_err)
       except:
-         raise Exception("Error while adding comment")
+         raise
 
    # Get summary, which is the title, for a PR
    def getSummary(self, pr):
       try:
          bugInfo = self.getInfo(pr)
          return bugInfo['short_desc']
-      except Exception as e:
-         raise Exception(e)
+      except:
+         raise
 
    # Get assignee for a PR
    # XXX: Side effects: Crashes if incorrect reporter name is passed
@@ -41,8 +41,8 @@ class BugzillaHelper(object):
       try:
          bugInfo = self.getInfo(pr)
          return bugInfo['assigned_to']
-      except Exception as e:
-         return Exception(e)
+      except:
+         raise
 
    # Get reporter for a PR
    # XXX: Side effects: Crashes if incorrect reporter name is passed
@@ -50,8 +50,8 @@ class BugzillaHelper(object):
       try:
          bugInfo = self.getInfo(pr)
          return bugInfo['reporter']
-      except Exception as e:
-         return Exception(e)
+      except:
+         raise
 
    # Get list of saved searches for a user-name
    def getSavedQueries(self, uName):
@@ -63,7 +63,7 @@ class BugzillaHelper(object):
       except xmlrpclib.Fault as not_found_err:
          raise Exception(not_found_err)
       except:
-         raise Exception("Error in get summary")
+         raise
 
    # Get bug list in a saved query
    #XXX API does not use uName paramter
@@ -75,16 +75,15 @@ class BugzillaHelper(object):
          raise Exception(value_err)
       except xmlrpclib.Fault as not_found_err:
          raise Exception(not_found_err)
-      except Exception as e:
-         raise Exception(e)
+      except:
+         raise
 
    def getUpdate0(self, pr):
       try:
          bugInfo = self.getInfo(pr)
          return bugInfo['description']
-      except Exception as e:
-         return Exception(e)
-
+      except:
+         raise
 
 if __name__ == '__main__':
     test = BugzillaHelper()

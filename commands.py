@@ -11,6 +11,8 @@ class BotCommands(object):
 
    BUGZILLA_LIST_SUPPORT_BUNDLES = u"/listSB"
    BUGZILLA_GET_SUMMARY = u"/summarize"
+   BUGZILLA_GET_BUG_DESCRIPTION = u"/getBugDescription"
+   BUGZILLA_POST_BUG_COMMENT = u"/postBugComment"
    BUGZILLA_GET_REPORTER = u"/getReporter"
    BUGZILLA_GET_ASSIGNEE = u"/getAssignee"
    BUGZILLA_GET_SAVED_SEARCH = u"/getSavedSearch"
@@ -119,7 +121,27 @@ class BotCommands(object):
       try:
          bugzillaHelper = BugzillaHelper()
          params = botmessage.messagetext.split(" ")
-         return bugzillaHelper.getBugList(params[0], params [1])
+         return bugzillaHelper.getBugList(params[1], params [2])
+      except Exception as e:
+         return str(e)
+
+   @classmethod
+   def bot_bugzilla_get_description(cls, botmessage):
+      try:
+         bugzillaHelper = BugzillaHelper()
+         params = botmessage.messagetext.split(" ")
+         return bugzillaHelper.getUpdate0(params[1])
+      except Exception as e:
+         return str(e)
+
+   @classmethod
+   def bot_bugzilla_post_comment(cls, botmessage):
+      try:
+         bugzillaHelper = BugzillaHelper()
+         params = botmessage.messagetext.split(" ")
+         comment = ' '.join(params[2:])
+         bugzillaHelper.addComment(params[1], comment)
+         return "Comment successfully posted."
       except Exception as e:
          return str(e)
 
@@ -200,7 +222,7 @@ BotCommands._commands.update({
       "admin": False,
       "subcommands": None,
       "callback": BotCommands.bot_bugzilla_get_saved_search,
-      "help": "gets the list of saved searches for a user. usage: /getSavedSearch <PR number>",
+      "help": "gets the list of saved searches for a user. usage: /getSavedSearch <LDAP username>",
       "args": False
    }})
 
@@ -210,6 +232,26 @@ BotCommands._commands.update({
       "admin": False,
       "subcommands": None,
       "callback": BotCommands.bot_bugzilla_get_bug_list,
-      "help": "gets the list of bug for a saved search. usage: /getBugList <PR number>",
+      "help": "gets the list of bug for a saved search. usage: /getBugList <LDAP username> <query>",
+      "args": False
+   }})
+
+BotCommands._commands.update({
+   BotCommands.BUGZILLA_GET_BUG_DESCRIPTION: {
+      "authenticated": True,
+      "admin": False,
+      "subcommands": None,
+      "callback": BotCommands.bot_bugzilla_get_description,
+      "help": "gets bugs description. usage: /getBugDescription <PR number>",
+      "args": False
+   }})
+
+BotCommands._commands.update({
+   BotCommands.BUGZILLA_POST_BUG_COMMENT: {
+      "authenticated": True,
+      "admin": False,
+      "subcommands": None,
+      "callback": BotCommands.bot_bugzilla_post_comment,
+      "help": "posts comment to the bug. usage: /postBugComment <PR number> <comment>",
       "args": False
    }})
