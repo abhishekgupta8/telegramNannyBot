@@ -20,5 +20,5 @@ class BugzillaHelper(object):
       return summary
          
 if __name__ == '__main__':
-    test = BugzillaHelper('235435727')
+    test = BugzillaHelper('1777085')
     print test.getSummary()

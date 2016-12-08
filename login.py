@@ -12,7 +12,7 @@ from urlparse import urlparse
 
 # replace this with bugzilla.eng.vmware.com after you're done testing -jon
 
-BUGZILLA_URL = 'https://bugzilla-beta.eng.vmware.com/xmlrpc.cgi'
+BUGZILLA_URL = 'https://bugzilla.eng.vmware.com/xmlrpc.cgi'
 DEBUG = 1
 
 PYVERSION = None
