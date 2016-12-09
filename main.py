@@ -6,6 +6,7 @@ import time
 import telepot
 from commands import BotCommands
 from message import BotMessage
+from telepot.namedtuple import ReplyKeyboardMarkup, KeyboardButton
 
 
 class Main(object):
@@ -59,10 +60,20 @@ class Main(object):
          return
 
       rc = BotCommands.process_command(botmessage, self.context)
-      maxLen = 4000
-      if rc:
-         for i in range(0, len(rc), maxLen):
-            self.bot.sendMessage(botmessage.user.userid, rc[i:i+maxLen])
+      if rc['isKeyboard'] == True:
+         keyBoardButtons = []
+         for outOption in rc['text'].split('\n'):
+            keyBoardButtons.append([KeyboardButton(text=outOption,
+                                                        callback_data=outOption)])
+         keyboard = ReplyKeyboardMarkup(keyboard=keyBoardButtons)
+         self.bot.sendMessage(botmessage.user.userid,
+                              'Use keyboard',
+                              reply_markup=keyboard)
+      else:
+         maxLen = 4000
+         data = rc['text']
+         for i in range(0, len(data), maxLen):
+            self.bot.sendMessage(botmessage.user.userid, data[i:i+maxLen])
 
    def start(self):
       self.bot.message_loop(self._handle)

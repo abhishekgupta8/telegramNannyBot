@@ -59,6 +59,14 @@ class BotCommands(object):
          return True
 
    @classmethod
+   def create_keyboard_dict(cls, text):
+      return {'isKeyboard':True, 'text': text}
+
+   @classmethod
+   def create_text_dict(cls, text):
+      return {'isKeyboard':False, 'text': text}
+
+   @classmethod
    def check_pr(cls, context, userid):
       return context[userid]['PR'] != None
 
@@ -127,11 +135,11 @@ class BotCommands(object):
                   (subcommand,
                   " <args>" if _subcommand['args'] else "",
                   _subcommand['help'])
-      return help_str
+      return BotCommands.create_keyboard_dict(help_str)
 
    @classmethod
    def bot_ping(cls, botmessage, context):
-      return "ping!"
+      return BotCommands.create_text_dict("pong!")
 
    @classmethod
    def bot_set_pr(cls, botmessage, context):
@@ -317,7 +325,7 @@ BotCommands._commands.update({
       "admin": False,
       "subcommands": None,
       "callback": BotCommands.bot_ping,
-      "help": "check if server is responsive",
+      "help": "",
       "args": False
    }})
 
