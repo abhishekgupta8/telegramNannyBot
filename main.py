@@ -10,6 +10,7 @@ from message import BotMessage
 
 class Main(object):
    def __init__(self):
+      self.context = {}
       self.reload_config()
       self.bot = telepot.Bot(self.config.get('apikey', ''))
 
@@ -34,6 +35,13 @@ class Main(object):
 
    def _handle(self, msg):
       botmessage = BotMessage(msg, self.config)
+      if botmessage.user.userid not in self.context:
+         self.context[botmessage.user.userid] = {'LDAP_username': None,
+                                                 'PR': None,
+                                                 'SB': None,
+                                                 'search_keyword': None,
+                                                 'comment': None,
+                                                 'saved_search': None}
 
       # check if user is allowed to access
       if not self.check_cmd_access(botmessage):
@@ -50,7 +58,7 @@ class Main(object):
             "Unrecognized command! Check /help")
          return
 
-      rc = BotCommands.process_command(botmessage)
+      rc = BotCommands.process_command(botmessage, self.context)
       maxLen = 4000
       if rc:
          for i in range(0, len(rc), maxLen):
