@@ -34,6 +34,7 @@ class Main(object):
       return True
 
    def _handle(self, msg):
+      chat_id = msg['chat']['id']
       botmessage = BotMessage(msg, self.config)
       if botmessage.user.userid not in self.context:
          self.context[botmessage.user.userid] = {'LDAP_username': None,
@@ -62,7 +63,7 @@ class Main(object):
       maxLen = 4000
       if rc:
          for i in range(0, len(rc), maxLen):
-            self.bot.sendMessage(botmessage.user.userid, rc[i:i+maxLen])
+            self.bot.sendMessage(chat_id, rc[i:i+maxLen])
 
    def start(self):
       self.bot.message_loop(self._handle)
